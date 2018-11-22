@@ -36,8 +36,8 @@ config :ueberauth, Ueberauth,
     ]}
   ]
 
-config :auth, Auth.Guardian,
-  issuer: "Auth",
+config :auth, Accountable.Guardian,
+  issuer: "Accountable",
   secret_key: "generate with mix phx.gen.secret",
 
   permissions: %{
