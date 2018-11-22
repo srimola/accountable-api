@@ -36,9 +36,10 @@ config :ueberauth, Ueberauth,
     ]}
   ]
 
+# TODO: The secret key needs to be updated for production
 config :accountable, Accountable.Guardian,
   issuer: "Accountable",
-  secret_key: "generate with mix phx.gen.secret",
+  secret_key: "GcS3zzR6uGy1LekQRAGJoI+QUUwuDhX965yCeaTyk1wwEn0HBVIumtMDgiVrfmf9",
 
   permissions: %{
     default: [
