@@ -5,7 +5,8 @@ defmodule Accountable.Repo.Migrations.CreateUsers do
     create table(:users) do
       add :email, :string
       add :password_hash, :string
-      add :is_active, :boolean, default: false, null: false
+      add :permissions, :map
+      add :is_active, :boolean, default: true, null: true
 
       timestamps()
     end

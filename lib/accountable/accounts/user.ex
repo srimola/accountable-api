@@ -21,7 +21,8 @@ defmodule Accountable.Accounts.User do
   def changeset(%User{} = user, attrs) do
     user
     |> cast(attrs, [:email, :password, :is_active, :permissions])
-    |> validate_required([:email, :password, :permissions])
+    |> validate_required([:email, :password])
+    |> validate_length(:password, min: 8)
     |> unique_constraint(:email)
 
     # Hash passwords before saving to database
@@ -31,7 +32,7 @@ defmodule Accountable.Accounts.User do
   def put_hashed_password(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: password}} ->
-        put_change(changeset, :hashed_password, hashpwsalt(password))
+        put_change(changeset, :password_hash, hashpwsalt(password))
         _ -> changeset
     end
   end

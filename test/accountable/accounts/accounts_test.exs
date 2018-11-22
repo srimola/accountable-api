@@ -6,7 +6,7 @@ defmodule Accountable.AccountsTest do
   describe "users" do
     alias Accountable.Accounts.User
 
-    @valid_attrs %{email: "some email", is_active: true}
+    @valid_attrs %{email: "some email", password: "password", is_active: true}
     @update_attrs %{email: "some updated email", is_active: false}
     @invalid_attrs %{email: nil, is_active: nil}
 

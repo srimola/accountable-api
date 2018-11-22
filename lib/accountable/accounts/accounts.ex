@@ -6,27 +6,9 @@ defmodule Accountable.Accounts do
   import Ecto.Query, warn: false
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   alias Accountable.Repo
+  alias Accountable.Guardian
 
   alias Accountable.Accounts.User
-
-  def get_user_by_username_and_password(nil, password), do: {:error, :invalid}
-  def get_user_by_username_and_password(username, nil), do: {:error, :invalid}
-
-  @doc """
-  Return user if password param hashed matches user.password_hash
-  otherwise returns an unauthorized error
-  """
-  def get_user_by_username_and_password(username, password) do
-    with %User{} = user <- Repo.get_by(User, username: String.downcase(username)),
-      true <- checkpw(password, user.password_hash) do
-        {:ok, user}
-      else
-        _ ->
-          dummy_checkpw()
-          {:error, :unauthorized}
-
-      end
-  end
 
   @doc """
   Returns the list of users.
@@ -120,5 +102,54 @@ defmodule Accountable.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  @doc """
+  Return user by email
+  """
+  def get_user_by_username_and_password(username, password) do
+    with %User{} = user <- Repo.get_by(User, username: String.downcase(username)),
+      true <- checkpw(password, user.password_hash) do
+        {:ok, user}
+      else
+        _ ->
+          dummy_checkpw()
+          {:error, :unauthorized}
+
+      end
+  end
+
+  @doc """
+  Returns the jwt if the user's email & password can authenticate the user
+  """
+  def token_sign_in(email, password) do
+    case email_password_auth(email, password) do
+      {:ok, user} -> Guardian.encode_and_sign(user)
+      _ -> {:error, :unauthorized}
+    end
+  end
+
+  defp email_password_auth(email, password) when is_binary(email) and is_binary(password) do
+    with {:ok, user} <- get_by_email(email),
+         do: verify_password(password, user)
+  end
+
+  defp verify_password(password, %User{} = user) when is_binary(password) do
+    if checkpw(password, user.password_hash) do
+      {:ok, user}
+    else
+      {:error, :invalid_password}
+    end
+  end
+
+  defp get_by_email(email) when is_binary(email) do
+    case Repo.get_by(User, email: email) do
+      nil ->
+        dummy_checkpw()
+        {:error, "Login error"}
+
+      user ->
+        {:ok, user}
+    end
   end
 end
