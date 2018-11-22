@@ -53,7 +53,7 @@ defmodule Accountable.Accounts do
   """
   def create_user(attrs \\ %{}) do
     %User{}
-    |> User.changeset(attrs)
+    |> User.register_changeset(attrs)
     |> Repo.insert()
   end
 

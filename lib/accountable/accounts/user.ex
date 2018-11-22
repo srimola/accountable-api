@@ -21,6 +21,19 @@ defmodule Accountable.Accounts.User do
   def changeset(%User{} = user, attrs \\ :empty) do
     user
     |> cast(attrs, [:email, :password, :is_active, :permissions])
+    |> validate_required([:email])
+    |> validate_format(:email, ~r/@/)
+    |> validate_length(:password, min: 8)
+    |> unique_constraint(:email)
+
+    # Hash passwords before saving to database
+    |> put_hashed_password()
+    |> put_change(:password, nil)
+  end
+
+  def register_changeset(%User{} = user, attrs \\ :empty) do
+    user
+    |> cast(attrs, [:email, :password, :is_active, :permissions])
     |> validate_required([:email, :password])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)
@@ -28,6 +41,7 @@ defmodule Accountable.Accounts.User do
 
     # Hash passwords before saving to database
     |> put_hashed_password()
+    |> put_change(:password, nil)
   end
 
   def put_hashed_password(changeset) do

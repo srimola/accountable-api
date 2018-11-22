@@ -31,7 +31,7 @@ defmodule Accountable.AccountsTest do
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
-      assert user.email == "some email"
+      assert user.email == @valid_attrs.email
       assert user.is_active == true
     end
 
@@ -42,7 +42,7 @@ defmodule Accountable.AccountsTest do
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
       assert {:ok, %User{} = user} = Accounts.update_user(user, @update_attrs)
-      assert user.email == "some updated email"
+      assert user.email == @update_attrs.email
       assert user.is_active == false
     end
 
