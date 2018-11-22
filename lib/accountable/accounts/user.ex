@@ -25,6 +25,7 @@ defmodule Accountable.Accounts.User do
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)
     |> unique_constraint(:email)
+    |> downcase_value(:email)
 
     # Hash passwords before saving to database
     |> put_hashed_password()
@@ -38,10 +39,15 @@ defmodule Accountable.Accounts.User do
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)
     |> unique_constraint(:email)
+    |> downcase_value(:email)
 
     # Hash passwords before saving to database
     |> put_hashed_password()
     |> put_change(:password, nil)
+  end
+
+  def downcase_value(changeset, value) do
+    update_change(changeset, value, &String.downcase/1)
   end
 
   def put_hashed_password(changeset) do

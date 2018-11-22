@@ -107,8 +107,8 @@ defmodule Accountable.Accounts do
   @doc """
   Return user by email
   """
-  def get_user_by_username_and_password(username, password) do
-    with %User{} = user <- Repo.get_by(User, username: String.downcase(username)),
+  def get_user_by_email_and_password(email, password) do
+    with %User{} = user <- Repo.get_by(User, email: String.downcase(email)),
       true <- checkpw(password, user.password_hash) do
         {:ok, user}
       else
@@ -129,8 +129,8 @@ defmodule Accountable.Accounts do
     end
   end
 
-  defp email_password_auth(email, password) when is_binary(email) and is_binary(password) do
-    with {:ok, user} <- get_by_email(email),
+  def email_password_auth(email, password) when is_binary(email) and is_binary(password) do
+    with {:ok, user} <- get_by_email(String.downcase(email)),
          do: verify_password(password, user)
   end
 

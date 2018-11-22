@@ -11,6 +11,12 @@ defmodule AccountableWeb.Router do
   end
 
   scope "/api/v1", AccountableWeb do
+    pipe_through([:api, :jwt_authenticated])
+
+    resources "/calendars", CalendarController, except: [:new, :edit]
+  end
+
+  scope "/api/v1", AccountableWeb do
     pipe_through :api
 
     resources("/users", UserController, only: [:index, :show])
