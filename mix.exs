@@ -46,6 +46,7 @@ defmodule Accountable.MixProject do
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.0"},
+      {:cors_plug, "~> 2.0"},
     ]
   end
 

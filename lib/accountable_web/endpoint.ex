@@ -40,5 +40,7 @@ defmodule AccountableWeb.Endpoint do
     key: "_accountable_key",
     signing_salt: "2ZfXJPcG"
 
+  plug CORSPlug
+
   plug AccountableWeb.Router
 end

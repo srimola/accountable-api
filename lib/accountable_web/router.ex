@@ -5,7 +5,7 @@ defmodule AccountableWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", AccountableWeb do
+  scope "/api/v1", AccountableWeb do
     pipe_through :api
 
     resources("/users", UserController, execpt: [:new, :edit])

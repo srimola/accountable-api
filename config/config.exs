@@ -48,7 +48,10 @@ config :accountable, Accountable.Guardian,
     ]
   }
 
-
+# TODO: Cors_plug will have to updated in prod
+config :cors_plug,
+  origin: ["*"],
+  max_age: 86400
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

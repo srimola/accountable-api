@@ -18,10 +18,11 @@ defmodule Accountable.Accounts.User do
   end
 
   @doc false
-  def changeset(%User{} = user, attrs) do
+  def changeset(%User{} = user, attrs \\ :empty) do
     user
     |> cast(attrs, [:email, :password, :is_active, :permissions])
     |> validate_required([:email, :password])
+    |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8)
     |> unique_constraint(:email)
 
