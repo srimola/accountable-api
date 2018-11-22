@@ -1,5 +1,5 @@
 defmodule Accountable.Guardian do
-  use Guardian, otp_app: :auth
+  use Guardian, otp_app: :accountable
 
   def subject_for_token(%{id: id}, _claims) do
     {:ok, to_string(id)}
