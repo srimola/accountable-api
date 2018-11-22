@@ -1,4 +1,4 @@
-# Accountable
+# Accountable API
 
 To start your Phoenix server:
 
