@@ -1,4 +1,4 @@
-defmodule Accountable.UserController do
+defmodule AccountableWeb.UserController do
   use AccountableWeb, :controller
 
   alias Accountable.Accounts
