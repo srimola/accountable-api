@@ -10,7 +10,7 @@ defmodule Accountable.Guardian do
   end
 
   def resource_from_claims(%{"sub" => sub}) do
-    {:ok, Auth.Accounts.get_user!(sub)}
+    {:ok, Accountable.Accounts.get_user!(sub)}
   end
 
   def resource_from_claims(_claims) do
