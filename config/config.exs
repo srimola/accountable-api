@@ -25,6 +25,30 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :ueberauth, Ueberauth,
+  bash_path: "/api/auth",
+  providers: [
+    identity: {Ueberauth.Strategy.Identity, [
+      callback_methods: ["POST"],
+      nickname_field: :username,
+      param_nesting: "user",
+      uid_field: :username
+    ]}
+  ]
+
+config :auth, Auth.Guardian,
+  issuer: "Auth",
+  secret_key: "generate with mix phx.gen.secret",
+
+  permissions: %{
+    default: [
+      :read_users,
+      :write_users
+    ]
+  }
+
+
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

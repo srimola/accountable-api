@@ -4,9 +4,29 @@ defmodule Accountable.Accounts do
   """
 
   import Ecto.Query, warn: false
+  import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   alias Accountable.Repo
 
   alias Accountable.Accounts.User
+
+  def get_user_by_username_and_password(nil, password), do: {:error, :invalid}
+  def get_user_by_username_and_password(username, nil), do: {:error, :invalid}
+
+  @doc """
+  Return user if password param hashed matches user.password_hash
+  otherwise returns an unauthorized error
+  """
+  def get_user_by_username_and_password(username, password) do
+    with %User{} = user <- Repo.get_by(User, username: String.downcase(username)),
+      true <- checkpw(password, user.password_hash) do
+        {:ok, user}
+      else
+        _ ->
+          dummy_checkpw()
+          {:error, :unauthorized}
+
+      end
+  end
 
   @doc """
   Returns the list of users.
