@@ -7,8 +7,8 @@ defmodule AccountableWeb.UserController do
 
   action_fallback(AccountableWeb.FallbackController)
 
-  def sign_in(conn, %{"email" => email, "password" => password}) do
-    case Accounts.token_sign_in(email, password) do
+  def login(conn, %{"email" => email, "password" => password}) do
+    case Accounts.token_login(email, password) do
       {:ok, token, _claims} ->
         conn
         |> render("jwt.json", jwt: token)

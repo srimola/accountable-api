@@ -13,6 +13,8 @@ defmodule AccountableWeb.Router do
   scope "/api/v1", AccountableWeb do
     pipe_through :api
 
-    resources("/users", UserController, execpt: [:new, :edit])
+    resources("/users", UserController, only: [:index, :show])
+    post("/auth/register", UserController, :create)
+    post("/auth/login", UserController, :login)
   end
 end

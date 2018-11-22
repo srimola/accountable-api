@@ -122,7 +122,7 @@ defmodule Accountable.Accounts do
   @doc """
   Returns the jwt if the user's email & password can authenticate the user
   """
-  def token_sign_in(email, password) do
+  def token_login(email, password) do
     case email_password_auth(email, password) do
       {:ok, user} -> Guardian.encode_and_sign(user)
       _ -> {:error, :unauthorized}
